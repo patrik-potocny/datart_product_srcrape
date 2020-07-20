@@ -22,7 +22,7 @@ def from_lists_to_excel():
         'Link': main_links,
     })
 
-    product_info_df.to_excel('product_info.xlsx')
+    product_info_df.to_excel('scrape_results//product_info.xlsx')
 
 
 def from_lists_to_csv():
