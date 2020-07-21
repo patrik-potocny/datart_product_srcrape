@@ -3,6 +3,8 @@ import csv
 import pandas
 import requests
 
+
+#Finds max page number to which for loop can go
 def find_max_page_num(url):
     html = requests.get(url)
     html_soup = BeautifulSoup(html.content, 'html.parser')
@@ -38,9 +40,10 @@ def get_user_input():
     global main_url
     global file_format
     global file_name
+    # Url to scrape
     print('Go to datart.sk and select any category of products select whatever sorting you want and copy link here.')
     main_url = input('Enter url, make sure it has https:// at start: ')
-
+    # File format csv or xlsx
     answer_is_correct = False
     while answer_is_correct == False:
         print('Do you want to save to: \na) csv\nb) xlsx')
@@ -49,9 +52,10 @@ def get_user_input():
             answer_is_correct = True
         else:
             print('CHOOSE option a or b')
+    # output file name
     file_name = input('Name of the output file: ')
 
-
+# Main list to which we will append data
 main_names = []
 main_prices = []
 main_links = []
@@ -59,11 +63,13 @@ main_links = []
 
 get_user_input()
 
-
+# sets max products per page to 48
+# Replaces strings in Url so for loop can add values to go thru each page,
 max_page_num_url = main_url.replace('Page=', 'Page=48')
 format_url = max_page_num_url.replace('Pos=0', 'Pos={}')
 
-
+# Formats urls Pos which determines page number its gonna scrape from
+# Scrapes all produts puts them into lists and then extends to main lists in outer scope
 pos = -48
 for num in range(find_max_page_num(max_page_num_url)):
     pos += 48
@@ -88,7 +94,7 @@ for num in range(find_max_page_num(max_page_num_url)):
     main_prices.extend(prices)
     main_links.extend(links)
 
-
+# Checks users choice for output file format
 if file_format == 'a':
     from_lists_to_csv(file_name)
 
